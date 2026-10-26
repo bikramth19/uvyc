@@ -16,36 +16,4 @@ document.addEventListener('DOMContentLoaded', function(){
       this.classList.add('active');
     });
   });
-  // Password-protected camera pages: custom dialog only, no browser prompt/alert.
-  document.querySelectorAll('.camera-protected[data-password]').forEach(function(page){
-      var expected=page.getAttribute('data-password').split(',').map(function(password){ return password.trim(); });
-      var overlay=page.querySelector('.password-overlay');
-      var content=page.querySelector('.protected-content');
-      var form=page.querySelector('.password-form');
-      var input=form ? form.querySelector('input[type="password"]') : null;
-      var error=page.querySelector('.password-error');
-      function showLocked(){
-        if(overlay) overlay.style.display='flex';
-        if(content) content.style.display='none';
-        if(error) error.style.display='none';
-        if(input) input.value='';
-      }
-      function unlock(){
-        if(overlay) overlay.style.display='none';
-        if(content) content.style.display='block';
-        if(error) error.style.display='none';
-      }
-      showLocked();
-      if(form){
-        form.addEventListener('submit', function(e){
-          e.preventDefault();
-          var val=input ? input.value : '';
-          if(expected.indexOf(val)!==-1){ unlock(); }
-          else {
-            if(error){ error.textContent='Incorrect password. Please try again.'; error.style.display='block'; }
-            if(input){ input.focus(); input.select(); }
-          }
-        });
-      }
-  });
 });
